@@ -85,3 +85,8 @@ nav a:hover {
 [role="button"] {
     white-space: nowrap;
 }
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+}

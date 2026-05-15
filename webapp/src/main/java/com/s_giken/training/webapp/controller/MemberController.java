@@ -182,4 +182,7 @@ public class MemberController {
         redirectAttributes.addFlashAttribute("message", "削除しました。");
         return "redirect:/member/search";
     }
+
+   
+    
 }
