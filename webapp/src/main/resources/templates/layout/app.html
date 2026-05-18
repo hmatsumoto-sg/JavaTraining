@@ -23,11 +23,12 @@
     </ul>
     <!--/* 右寄せ */-->
     <div>
-      <!-- TODO: ログアウト -->
-      <form class="logout" th:action="@{/logout}" method="POST">
-        <button type="submit">ログアウト</button>
-
-      </form>
+      <!--/* ログアウト処理 */-->
+      <li sec:authorize="isAuthenticated()">
+        <form class="logout" th:action="@{/logout}" method="POST">
+          <button type="submit">ログアウト</button>
+        </form>
+      </li>
     </div>
   </nav>
 
