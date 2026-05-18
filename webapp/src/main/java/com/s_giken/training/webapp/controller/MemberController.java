@@ -70,15 +70,15 @@ public class MemberController {
     /**
      * 加入者検索結果画面を表示する
      * 
-     * @param memberSearchCodition 加入者検索条件画面で入力された検索条件
+     * @param memberSearchCondition 加入者検索条件画面で入力された検索条件
      * @param model                Thymeleafに渡すデータ
      * @return 加入者検索結果画面のテンプレート名
      */
     @PostMapping("/search")
     public String searchAndListing(
-            @ModelAttribute("memberSearchCondition") MemberSearchCondition memberSearchCodition,
+            @ModelAttribute("memberSearchCondition") MemberSearchCondition memberSearchCondition,
             Model model) {
-        var result = memberService.findByConditions(memberSearchCodition);
+        var result = memberService.findByConditions(memberSearchCondition);
         model.addAttribute("result", result);
         return "member_search_result";
     }

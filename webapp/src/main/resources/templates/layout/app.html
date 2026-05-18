@@ -24,11 +24,11 @@
     <!--/* 右寄せ */-->
     <div>
       <!--/* ログアウト処理 */-->
-      <li sec:authorize="isAuthenticated()">
+      <div sec:authorize="isAuthenticated()">
         <form class="logout" th:action="@{/logout}" method="POST">
           <button type="submit">ログアウト</button>
         </form>
-      </li>
+      </div>
     </div>
   </nav>
 

@@ -55,15 +55,16 @@ public class MemberRepository implements IMemberRepository {
     }
 
     /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
+     * メールアドレスの一部と名前の一部にマッチするの加入者情報リストを取得する。
      *
      * @return Optional型の Memberオブジェクト
      */
     @Override
-    public List<Member> findByMailLike(String mail) {
-        String sql = "SELECT * FROM T_MEMBER WHERE mail like ?";
-        Object[] args = { mail };
-        int[] argTypes = { Types.VARCHAR };
+    public List<Member> findByMailLikeAndNameLike(String mail, String name) {
+        String sql = "SELECT * FROM T_MEMBER WHERE mail like ? AND name like ?";
+        Object[] args = { "%" + (mail != null ? mail : "") + "%", 
+                            "%" + (name != null ? name : "") + "%"};
+        int[] argTypes = { Types.VARCHAR, Types.VARCHAR };
         List<Member> result = jdbcTemplate.query(sql, args, argTypes, rowMapper);
         return result;
     }

@@ -20,11 +20,11 @@ public interface IMemberRepository {
     public Optional<Member> findById(Long id);
 
     /**
-     * メールアドレスの一部にマッチするの加入者情報リストを取得する。
+     * メールアドレスの一部と名前の一部にマッチするの加入者情報リストを取得する。
      * 
      * @return Optional型の Memberオブジェクト
      */
-    public List<Member> findByMailLike(String mail);
+    public List<Member> findByMailLikeAndNameLike(String mail, String name);
 
     /**
      * 加入者情報をデータベースへ登録する。
