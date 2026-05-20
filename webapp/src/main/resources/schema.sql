@@ -11,6 +11,16 @@ CREATE TABLE IF NOT EXISTS t_user (
     PRIMARY KEY (userName)
 );
 
+CREATE SEQUENCE IF NOT EXISTS t_charge_seq AS BIGINT START WITH 1 INCREMENT BY 1 NO CYCLE; 
+CREATE TABLE IF NOT EXISTS t_charge (
+    charge_id       BIGINT NOT NULL,
+    name            VARCHAR(255) NOT NULL,
+    amount          BIGINT NOT NUll,
+    start_date	    DATE NOT NULL,
+    end_date	    DATE,
+    PRIMARY KEY (charge_id)
+);
+
 CREATE TABLE IF NOT EXISTS t_member (
     member_id	    BIGINT NOT NULL,
     mail	        VARCHAR(255) NOT NULL,

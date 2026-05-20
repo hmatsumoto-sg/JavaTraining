@@ -23,6 +23,14 @@ CREATE TABLE IF NOT EXISTS t_member (
     PRIMARY KEY (member_id)
 );
 
+CREATE TABLE IF NOT EXISTS t_charge (
+    charge_id       BIGINT NOT NULL,
+    name            VARCHAR(255) NOT NULL,
+    amount          BIGINT NOT NUll,
+    start_date	    DATE NOT NULL,
+    end_date	    DATE
+);
+
 BEGIN;
 
 DELETE FROM T_MEMBER;

@@ -1,0 +1,1 @@
+insert into T_CHARGE (CHARGE_ID, NAME, AMOUNT, START_DATE, END_DATE) values (1, 'スタンダードプラン', 3500, '2010-04-01', '9999-12-31');
