@@ -22,65 +22,62 @@ import com.s_giken.training.webapp.service.IChargeService;
 public class ChargeController {
     private final IChargeService chargeService;
 
-public ChargeController(IChargeService chargeService) {
-    this.chargeService = chargeService;
-}
-
-//料金検索画面を表示する
-@GetMapping("/search")
-public String showSearchCondition(Model model) {
-    var chargeSearchCondition = new ChargeSearchCondition();
-    model.addAttribute( "chargeSearchCondition", chargeSearchCondition);
-    return "charge-search-condition";
-}
-
-//料金検索結果を表示する
-@PostMapping("/search")
-public String searchAndLisitong(
-    @ModelAttribute("chargeSearchCondition") ChargeSearchCondition chargeSearchCondition,
-    Model model) {
-    var result = chargeService.findByConditions(chargeSearchCondition);
-model.addAttribute("result", result);
-return "charge_search_result";   
-}
-
-//料金情報編集画面を表示する
-@GetMapping("/edit/{id}")
-public String editCharge(
-    @PathVariable Long id,
-    Model model) {
-    var charge = chargeService.findById(id);
-    if (!charge.isPresent()) {
-        throw new NotFoundException(String.format("指定したchargeId(%d)の加入者情報が存在しません。", id));
-    }
-    model.addAttribute("isAddMode", false);
-    model.addAttribute("charge", charge.get());
-    return "charge_edit";
+    public ChargeController(IChargeService chargeService) {
+        this.chargeService = chargeService;
     }
 
-//料金情報登録画面を表示する
-@GetMapping("/add")
-public String formAddCharge(Model model) {
-    var charge = new Charge();
-    model.addAttribute("isAddMode", true);
-    model.addAttribute("charge", charge);
-    return "charge_edit";
-}
+    // 料金検索画面を表示する
+    @GetMapping("/search")
+    public String showSearchCondition(Model model) {
+        var chargeSearchCondition = new ChargeSearchCondition();
+        model.addAttribute("chargeSearchCondition", chargeSearchCondition);
+        return "charge-search-condition";
+    }
 
-//料金情報を登録する
-@PostMapping("/add")
+    // 料金検索結果を表示する
+    @PostMapping("/search")
+    public String searchAndLisitong(
+            @ModelAttribute("chargeSearchCondition") ChargeSearchCondition chargeSearchCondition,
+            Model model) {
+        var result = chargeService.findByConditions(chargeSearchCondition);
+        model.addAttribute("result", result);
+        return "charge_search_result";
+    }
+
+    // 料金情報編集画面を表示する
+    @GetMapping("/edit/{id}")
+    public String editCharge(@PathVariable Long id, Model model) {
+        var charge = chargeService.findById(id);
+        if (!charge.isPresent()) {
+            throw new NotFoundException(String.format("指定したchargeId(%d)の加入者情報が存在しません。", id));
+        }
+        model.addAttribute("isAddMode", false);
+        model.addAttribute("charge", charge.get());
+        return "charge_edit";
+    }
+
+    // 料金情報登録画面を表示する
+    @GetMapping("/add")
+    public String formAddCharge(Model model) {
+        var charge = new Charge();
+        model.addAttribute("isAddMode", true);
+        model.addAttribute("charge", charge);
+        return "charge_edit";
+    }
+
+    // 料金情報を登録する
+    @PostMapping("/add")
     @Transactional
-    public String addCharge(
-            @Validated Charge charge,
+    public String addCharge(@Validated Charge charge,
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
-                // 日付が両方入力されている場合のみ比較を行う
-     if (charge.getStartDate() != null && charge.getEndDate() != null) {
-         if (charge.getEndDate().isBefore(charge.getStartDate())) {
-            bindingResult.rejectValue("endDate", "error.date.range", "適用終了日は適用開始日以降の日付を入力してください。");
-       }
-   }
+        // 日付が両方入力されている場合のみ比較を行う
+        if (charge.getStartDate() != null && charge.getEndDate() != null) {
+            if (charge.getEndDate().isBefore(charge.getStartDate())) {
+                bindingResult.rejectValue("endDate", "error.date.range", "適用終了日は適用開始日以降の日付を入力してください。");
+            }
+        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("isAddMode", true);
             return "charge_edit";
@@ -90,21 +87,20 @@ public String formAddCharge(Model model) {
         return "redirect:/charge/edit/" + charge.getChargeId();
     }
 
-    //編集した料金情報を更新する
+    // 編集した料金情報を更新する
     @PostMapping("/update")
     @Transactional
-    public String saveCharge(
-            @Validated Charge charge,
+    public String saveCharge(@Validated Charge charge,
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes) {
 
-// 日付が両方入力されている場合のみ比較を行う
-if (charge.getStartDate() != null && charge.getEndDate() != null) {
-       if (charge.getEndDate().isBefore(charge.getStartDate())) {
-             bindingResult.rejectValue("endDate", "error.date.range", "適用終了日は適用開始日以降の日付を入力してください。");
+        // 日付が両方入力されている場合のみ比較を行う
+        if (charge.getStartDate() != null && charge.getEndDate() != null) {
+            if (charge.getEndDate().isBefore(charge.getStartDate())) {
+                bindingResult.rejectValue("endDate", "error.date.range", "適用終了日は適用開始日以降の日付を入力してください。");
+            }
         }
- }
 
         if (bindingResult.hasErrors()) {
             boolean isAddMode = (charge.getChargeId() == null);
@@ -116,12 +112,10 @@ if (charge.getStartDate() != null && charge.getEndDate() != null) {
         return "redirect:/charge/edit/" + charge.getChargeId();
     }
 
-    //料金情報を削除する
+    // 料金情報を削除する
     @GetMapping("/delete/{id}")
     @Transactional
-    public String deleteCharge(
-            @PathVariable Long id,
-            RedirectAttributes redirectAttributes) {
+    public String deleteCharge(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         var charge = chargeService.findById(id);
         if (!charge.isPresent()) {
             throw new NotFoundException(String.format("指定したchargeId(%d)の加入者情報が存在しません。", id));
